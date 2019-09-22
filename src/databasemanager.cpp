@@ -9,8 +9,7 @@
 
 DatabaseManager::DatabaseManager()
 {
-
-    QString databaseName = "C:/Users/diana/OneDrive/Dokumente/QtProjects/HelloQtDatabase/HelloQtDatabase/testData/sampleDatabase.sqlite";
+    QString databaseName = QString(SOURCE_DIR) + "/testData/sampleDatabase.sqlite";
     QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
     database.setDatabaseName(databaseName);
     if (database.open() == true)
