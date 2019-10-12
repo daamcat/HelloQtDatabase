@@ -47,6 +47,7 @@ Window
     TableView
     {
         id: tableView
+        model: MySqlTableModel
         y: 207
         sortIndicatorVisible: true
         highlightOnFocus: true
@@ -55,25 +56,25 @@ Window
         anchors.left: parent.left
         anchors.right: parent.right
 
-
-
-
-
-
         TableViewColumn
         {
+            // The header sections are attached to the values in the model
+            // by defining the model role they attach to. In other words:
+            // How to connect a column in model to a column in table? With giving them the same role:
             role: "Description"
             title: "Description"
         }
         TableViewColumn
         {
-            role: "Price"
+            role: "price"
             title: "Price"
-        }
-        TableViewColumn
-        {
-            role: "Date"
-            title: "Date"
+            delegate: ItemDelegate
+            {
+                Text
+                {
+                    text: model.price + " €"
+                }
+            }
         }
         TableViewColumn
         {
@@ -82,10 +83,14 @@ Window
         }
         TableViewColumn
         {
+            role: "Date"
+            title: "Date"
+        }
+        TableViewColumn
+        {
             role: "Tag"
             title: "Tag"
         }
-        model: MySqlTableModel
     }
 }
 

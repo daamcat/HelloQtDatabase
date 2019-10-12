@@ -33,7 +33,14 @@ public:
     QVariant data(const QModelIndex &index,
                   int role = Qt::ItemDataRole::DisplayRole) const override;
 
+    // rowCount has been reimplemented in QSqlTableModel:
+    // virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+
 private:
+    QVector<QVariant> m_data;
 
 };
 
