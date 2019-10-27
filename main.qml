@@ -70,10 +70,13 @@ Window
             title: "Price"
             delegate: ItemDelegate
             {
-                Text
+                TextField
                 {
+                    id: hala
                     text: model.price + " €"
+                    onEditingFinished: model.price = text
                 }
+
             }
         }
         TableViewColumn

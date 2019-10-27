@@ -10,16 +10,14 @@ class MySqlTableModel;
 class DatabaseManager
 {
 public:
-    DatabaseManager();
+    DatabaseManager(const QString &tableName);
+    ~DatabaseManager();
 
     QString getTableName();
-    MySqlTableModel* getTableModel();
+    static MySqlTableModel* getTableModel(const QString &tableName);
 
 private:
-    QSqlDatabase m_databaseConnection;
-    QStringList m_tableNames;
-    MySqlTableModel *m_tableModel;
-
+    QString m_tableName;
 
 };
 

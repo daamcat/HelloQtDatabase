@@ -2,11 +2,10 @@
 
 
 BackEnd::BackEnd(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_databaseManager(DatabaseManager(""))
 {
-    m_databaseManager = DatabaseManager();
-
-
+    m_databaseManager = DatabaseManager("costs");
 }
 
 QString BackEnd::userName()
@@ -25,8 +24,10 @@ QString BackEnd::tableName()
     return m_databaseManager.getTableName();
 }
 
-MySqlTableModel* BackEnd::tableModel()
+void BackEnd::setTableName(const QString &name)
 {
-    return m_databaseManager.getTableModel();
+    m_tableName = name;
 }
+
+
 

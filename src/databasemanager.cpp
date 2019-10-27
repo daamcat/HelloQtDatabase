@@ -5,49 +5,43 @@
 #include <QString>
 #include <QDebug>
 #include <QStringList>
+#include <QSqlQuery>
+#include <QSqlError>
 
-
-DatabaseManager::DatabaseManager()
+DatabaseManager::DatabaseManager(const QString &tableName) :
+    m_tableName(tableName)
 {
-    QString databaseName = QString(SOURCE_DIR) + "/testData/sampleDatabase.sqlite";
-    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(databaseName);
-    if (database.open() == true)
-    {
-        m_tableNames = database.tables();
 
-        m_tableModel = new MySqlTableModel(nullptr,database);
-        m_tableModel->setTable("costs");
-        m_tableModel->setEditStrategy(QSqlTableModel::EditStrategy::OnManualSubmit);
-        m_tableModel->setHeaderData(0, Qt::Horizontal, "Description");
-        m_tableModel->setHeaderData(1, Qt::Horizontal, "Price");
-        m_tableModel->setHeaderData(2, Qt::Horizontal, "Date");
-        m_tableModel->setHeaderData(3, Qt::Horizontal, "Withdrawal");
-        m_tableModel->setHeaderData(4, Qt::Horizontal, "Tag");
-        m_tableModel->select();
-    }
-    else
-    {
-        qDebug()<<"Connection to database failed.";
-    }
-    database.close();
+}
 
-
+DatabaseManager::~DatabaseManager()
+{
+    qDebug()<<"DatabaseManager destructor is called.";
 }
 
 QString DatabaseManager::getTableName()
 {
-    if (m_tableNames.size()>0)
-    {
-        return m_tableNames.at(0);
-    }
-    else
-    {
-        return QString("");
-    }
+    return m_tableName;
 }
 
-MySqlTableModel* DatabaseManager::getTableModel()
+MySqlTableModel* DatabaseManager::getTableModel(const QString &tablename)
 {
-    return m_tableModel;
+    QString databaseName = QString(SOURCE_DIR) + "/testData/sampleDatabase.sqlite";
+    QSqlDatabase databaseConnection = QSqlDatabase::addDatabase("QSQLITE");
+    databaseConnection.setDatabaseName(databaseName);
+    if (databaseConnection.open() == false)
+    {
+        qDebug()<<"Connection to database failed.";
+    }
+
+    MySqlTableModel *tableModel = new MySqlTableModel(nullptr,databaseConnection);
+    tableModel->setTable(tablename);
+    tableModel->setEditStrategy(QSqlTableModel::EditStrategy::OnManualSubmit);
+    tableModel->setHeaderData(0, Qt::Horizontal, "Description");
+    tableModel->setHeaderData(1, Qt::Horizontal, "Price");
+    tableModel->setHeaderData(2, Qt::Horizontal, "Date");
+    tableModel->setHeaderData(3, Qt::Horizontal, "Withdrawal");
+    tableModel->setHeaderData(4, Qt::Horizontal, "Tag");
+    tableModel->select();
+    return tableModel;
 }

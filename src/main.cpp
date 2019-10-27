@@ -34,8 +34,8 @@ int exec_mainWindow(int argc, char *argv[])
     QTableView tableView(w.centralWidget());
     w.setCentralWidget(&tableView);
 
-    DatabaseManager manager;
-    tableView.setModel(manager.getTableModel());
+    MySqlTableModel *tableModel = DatabaseManager::getTableModel("costs");
+    tableView.setModel(tableModel);
     tableView.show();
 
     w.show();
@@ -54,10 +54,11 @@ int exec_qml(int argc, char *argv[])
     // Version (minor): 0
     // Imported library???: com.mycompany.mycomponent
 
-    DatabaseManager manager;
+    const QString tableName = "costs";
+    MySqlTableModel *tableModel = DatabaseManager::getTableModel(tableName);
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("MySqlTableModel", manager.getTableModel());
+    engine.rootContext()->setContextProperty("MySqlTableModel", tableModel);
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine,
                      &QQmlApplicationEngine::objectCreated,

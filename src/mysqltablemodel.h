@@ -9,6 +9,7 @@ https://wiki.qt.io/QML_and_QSqlTableModel
 
 #include <QSqlTableModel>
 #include <QQmlEngine>
+#include <QHash>
 
 class QSqlDatabase;
 
@@ -18,6 +19,7 @@ class MySqlTableModel : public QSqlTableModel
 
 public:
     explicit MySqlTableModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
+    ~MySqlTableModel() override;
 
     virtual QHash<int, QByteArray> roleNames() const override;
     // "const": roleNames() is a "constant member function" it is not allowed to modify the object. For example,
@@ -36,8 +38,10 @@ public:
     // rowCount has been reimplemented in QSqlTableModel:
     // virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
 private:
     QVector<QVariant> m_data;

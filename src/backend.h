@@ -28,23 +28,19 @@ class BackEnd : public QObject
     Q_PROPERTY(QString tableName // type: QString. name: tableName
                READ tableName // Required
                )
-    Q_PROPERTY(QSqlTableModel *tableModel // type: QSqlTableModel. name: tableModel
-               READ tableModel // Required
-               )
-
 public:
     explicit BackEnd(QObject *parent = nullptr);
     QString userName();
-    void setUserName(const QString& userName);
-
     QString tableName();
-    MySqlTableModel* tableModel();
+    void setUserName(const QString& userName);
+    void setTableName(const QString& tableName);
 
 signals:
     void signalUserNameChanged();
 
 private:
     QString m_userName;
+    QString m_tableName;
 
     DatabaseManager m_databaseManager;
 
